@@ -3,20 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>✨ Nam PC | My Profile  ✨</title>
-  <link rel="icon" href="https://nguyendinhsontunginfo.vercel.app/favicon.ico">
+  <title>✨ Nam PC | My Profile ✨</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     :root {
-      --bg: #050a10; /* Xanh đen sâu */
+      --bg: #050a10;
       --surface: #0d1624;
       --surface2: #162436;
-      --border: rgba(0, 180, 255, 0.18); /* Viền xanh nhạt */
-      --accent: #0ea5e9; /* Sky Blue chính */
-      --accent2: #38bdf8; /* Xanh sáng hơn */
-      --accent3: #7dd3fc; /* Xanh cực sáng */
-      --gold: #22d3ee; /* Chuyển gold thành Cyan cho đồng bộ */
+      --border: rgba(0, 180, 255, 0.18);
+      --accent: #0ea5e9;
+      --accent2: #38bdf8;
+      --accent3: #7dd3fc;
       --cyan: #06b6d4;
       --text: #f1f8ff;
       --muted: #8ba2b5;
@@ -158,9 +156,6 @@
     }
     .h-dot { color: #22c55e; animation: blink 2s ease-in-out infinite; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-    .h-love { font-size: 0.95rem; color: var(--muted); display: flex; align-items: center; gap: 8px; }
-    .h-love i { color: #ef4444; animation: heartbeat 1.2s ease-in-out infinite; }
-    @keyframes heartbeat { 0%,100%{transform:scale(1)} 50%{transform:scale(1.28)} }
 
     /* CARD */
     .card {
@@ -299,16 +294,15 @@
         <div class="av-ring"></div>
         <div class="av-ring"></div>
       </div>
-      <img class="av-img"
+      <img class="av-img" id="avatarImg"
         src="https://media.discordapp.net/attachments/1449653162603450492/1456460107427614882/content.png?ex=695871ad&is=6957202d&hm=189702c977b3ff1b915a53a91292ae0e9b03c5d9d3d7664e279c0493d579d84e&=&format=webp&quality=lossless&width=864&height=576"
-        alt="Nam PC" onerror="this.src='https://media.discordapp.net/attachments/1459036268489998336/1484131646243606568/hacker.png?ex=69bd1cce&is=69bbcb4e&hm=785508ce066131bda820688899db006743267ae99f330a978aa2b4a9d6f843c8&=&format=webp&quality=lossless&width=350&height=350'">
+        alt="Nam PC">
       <div class="av-dot"></div>
     </div>
 
     <div class="h-name">Nam PC</div>
-    <div class="h-code">// nampc · My Profile</div>
+    <div class="h-code">NAM PC · My Profile</div>
     <div class="h-badge"><span class="h-dot">●</span> ONLINE</div>
-    
   </div>
 
   <div class="card">
@@ -373,7 +367,8 @@
       <span class="vol-pct" id="volPct">80%</span>
     </div>
 
-    <audio id="audio" preload="metadata">
+    <!-- QUAN TRỌNG: preload="none" để tránh loader bị treo -->
+    <audio id="audio" preload="none">
       <source src="https://www.dropbox.com/scl/fi/p0isr59ehyx4dgayjx50a/Golden-Hour.mp3?rlkey=srfprfewdpu87uhpbri3dg6at&st=w27papxw&dl=1" type="audio/mpeg">
     </audio>
   </div>
@@ -382,12 +377,32 @@
 </div>
 
 <script>
-/* LOADER */
-window.addEventListener('load', () => {
-  setTimeout(() => document.getElementById('loader').classList.add('hide'), 2100);
+// ===== FIX LOADER =====
+// Dùng setTimeout cố định thay vì chờ window.load
+// Tránh bị treo khi ảnh/audio từ CDN ngoài load chậm hoặc bị lỗi
+setTimeout(function() {
+  document.getElementById('loader').classList.add('hide');
+}, 2200);
+
+// Fallback: nếu window.load xảy ra sớm hơn thì ẩn loader ngay
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    document.getElementById('loader').classList.add('hide');
+  }, 500);
 });
 
-/* PARTICLES - UPDATED TO BLUE */
+// Xử lý lỗi avatar - dùng ảnh dự phòng
+var avatarImg = document.getElementById('avatarImg');
+avatarImg.onerror = function() {
+  this.src = 'https://media.discordapp.net/attachments/1459036268489998336/1484131646243606568/hacker.png?ex=69bd1cce&is=69bbcb4e&hm=785508ce066131bda820688899db006743267ae99f330a978aa2b4a9d6f843c8&=&format=webp&quality=lossless&width=350&height=350';
+  this.onerror = function() {
+    // Nếu cả ảnh dự phòng cũng lỗi, tạo placeholder
+    this.style.background = 'linear-gradient(135deg, #0ea5e9, #06b6d4)';
+    this.src = 'https://scontent.fhan4-2.fna.fbcdn.net/v/t39.30808-6/621810633_1437615294562195_6135973501557034297_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=1d70fc&_nc_eui2=AeHVK-phd1ObrWeX5UPdX-5mOgT1uf_uNow6BPW5_-42jJ-mR3T6zIi63omiBpIubpA0R7QepWdqbb4SNw4PTH9v&_nc_ohc=t3VsdzwG5lMQ7kNvwEWiE1Q&_nc_oc=AdpPnPhOEuhZYehN06zpw4sanVxMZpvmhMYDHLXPTHLnN8jVdQJjzVZ4GlhM6YxhWe-R6zY3-eQfMXRIo7rut5ca&_nc_zt=23&_nc_ht=scontent.fhan4-2.fna&_nc_gid=gxH2TdgCGkDtYn-b-2mMkQ&_nc_ss=7a30f&oh=00_AfxO9i5zeTMk9GkAvM_1-LWeWTDlG9l8CeFXWsuFydwoPQ&oe=69C2F72C';
+  };
+};
+
+/* PARTICLES */
 const cv = document.getElementById('canvas');
 const cx = cv.getContext('2d');
 let W, H, pts = [];
@@ -403,7 +418,6 @@ for (let i = 0; i < 85; i++) pts.push({
   cx.clearRect(0,0,W,H);
   pts.forEach(p => {
     cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-    // Màu hạt bay đổi sang xanh dương (Sky Blue)
     cx.fillStyle = `rgba(14, 165, 233, ${p.a})`; cx.fill();
     p.x += p.dx; p.y += p.dy;
     if (p.x<0||p.x>W) p.dx*=-1;
@@ -412,7 +426,7 @@ for (let i = 0; i < 85; i++) pts.push({
   requestAnimationFrame(draw);
 })();
 
-/* MUSIC SCRIPT (GIỮ NGUYÊN) */
+/* MUSIC */
 const audio = document.getElementById('audio');
 const playBtn = document.getElementById('playBtn');
 const playIco = document.getElementById('playIco');
@@ -432,31 +446,41 @@ function fmt(s) {
   return `${m}:${sec.toString().padStart(2,'0')}`;
 }
 playBtn.addEventListener('click', () => {
-  if (playing) { audio.pause(); playIco.className='fas fa-play'; disc.classList.remove('spin'); }
-  else { audio.play().catch(()=>{}); playIco.className='fas fa-pause'; disc.classList.add('spin'); }
+  if (playing) {
+    audio.pause();
+    playIco.className = 'fas fa-play';
+    disc.classList.remove('spin');
+  } else {
+    audio.play().catch(() => {});
+    playIco.className = 'fas fa-pause';
+    disc.classList.add('spin');
+  }
   playing = !playing;
 });
 audio.addEventListener('timeupdate', () => {
   if (!audio.duration) return;
-  progFill.style.width = (audio.currentTime/audio.duration*100)+'%';
+  progFill.style.width = (audio.currentTime / audio.duration * 100) + '%';
   tCur.textContent = fmt(audio.currentTime);
   tTot.textContent = fmt(audio.duration);
 });
 audio.addEventListener('ended', () => {
-  playing=false; playIco.className='fas fa-play';
-  disc.classList.remove('spin'); progFill.style.width='0%'; tCur.textContent='0:00';
+  playing = false;
+  playIco.className = 'fas fa-play';
+  disc.classList.remove('spin');
+  progFill.style.width = '0%';
+  tCur.textContent = '0:00';
 });
 progBar.addEventListener('click', e => {
   if (!audio.duration) return;
   const r = progBar.getBoundingClientRect();
-  audio.currentTime = ((e.clientX-r.left)/r.width)*audio.duration;
+  audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
 });
 volBar.addEventListener('click', e => {
   const r = volBar.getBoundingClientRect();
-  const v = Math.max(0, Math.min(1,(e.clientX-r.left)/r.width));
+  const v = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width));
   audio.volume = v;
-  volFill.style.width = (v*100)+'%';
-  volPct.textContent = Math.round(v*100)+'%';
+  volFill.style.width = (v * 100) + '%';
+  volPct.textContent = Math.round(v * 100) + '%';
 });
 </script>
 </body>
