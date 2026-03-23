@@ -742,8 +742,9 @@ function tickSp(){
 }
 
 function applyLanyard(d){
-  const s=d.discord_status||'offline';
-  const info=STATUS_MAP[s]||STATUS_MAP.offline;
+  const raw=d.discord_status||'offline';
+  const s = raw==='offline' ? 'online' : raw;
+  const info=STATUS_MAP[s]||STATUS_MAP.online;
   ['online','idle','dnd','offline'].forEach(c=>{statusPill.classList.remove(c);avBadge.classList.remove(c);});
   statusPill.classList.add(info.cls);
   avBadge.classList.add(info.cls);
@@ -791,7 +792,14 @@ function connectWS(){
     }
     if(msg.op===0&&(msg.t==='INIT_STATE'||msg.t==='PRESENCE_UPDATE')) applyLanyard(msg.d);
   });
-  ws.addEventListener('close',()=>{clearInterval(hb);setTimeout(connectWS,5000);});
+  ws.addEventListener('close',()=>{
+    clearInterval(hb);
+    ['online','idle','dnd','offline'].forEach(c=>{statusPill.classList.remove(c);avBadge.classList.remove(c);});
+    statusTxt.textContent='Online';
+    statusPill.classList.add('online');
+    avBadge.classList.add('online');
+    setTimeout(connectWS,5000);
+  });
   ws.addEventListener('error',()=>ws.close());
 }
 
@@ -799,9 +807,10 @@ fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`)
   .then(r=>r.json())
   .then(j=>{if(j.success)applyLanyard(j.data);})
   .catch(()=>{
-    statusTxt.textContent='Offline';
-    statusPill.classList.add('offline');
-    avBadge.classList.add('offline');
+    ['online','idle','dnd','offline'].forEach(c=>{statusPill.classList.remove(c);avBadge.classList.remove(c);});
+    statusTxt.textContent='Online';
+    statusPill.classList.add('online');
+    avBadge.classList.add('online');
   });
 connectWS();
 
