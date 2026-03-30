@@ -1,4 +1,3 @@
-
 <html lang="vi">
 <head>
 <meta charset="UTF-8"/>
@@ -141,12 +140,6 @@ html,body{
 .status-pill.idle   .sp-dot{animation:blink 1.6s ease-in-out infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
 
-.custom-st{
-  display:none;align-items:center;gap:5px;justify-content:center;
-  font-size:.75rem;color:var(--muted2);margin-top:2px;
-}
-.custom-st.show{display:flex;}
-
 .tags{
   display:flex;flex-wrap:wrap;gap:7px;justify-content:center;
   animation:riseUp .7s .1s cubic-bezier(.22,1,.36,1) both;
@@ -212,55 +205,6 @@ html,body{
 .lnk-discord{--lc:#5865f2;} .lnk-discord .lnk-ico{background:rgba(88,101,242,.12);}
 .lnk-fb{--lc:#1877f2;} .lnk-fb .lnk-ico{background:rgba(24,119,242,.12);}
 .lnk-yt{--lc:#ff0000;} .lnk-yt .lnk-ico{background:rgba(255,0,0,.12);}
-
-.sp-card{
-  width:100%;
-  animation:riseUp .7s .2s cubic-bezier(.22,1,.36,1) both;
-  display:none;
-}
-.sp-card.show{display:block;}
-.sp-inner{
-  background:var(--card);border:1px solid rgba(30,215,96,.2);
-  border-radius:var(--r);padding:16px 18px;
-  position:relative;overflow:hidden;
-  display:flex;align-items:center;gap:14px;
-}
-.sp-inner::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,#1ed760,#0a9a40,#1ed760);
-  background-size:200%;animation:spBar 2s linear infinite;
-}
-@keyframes spBar{from{background-position:0%}to{background-position:200%}}
-.sp-art{
-  width:50px;height:50px;border-radius:10px;flex-shrink:0;
-  background:var(--card2);overflow:hidden;position:relative;
-}
-.sp-art img{width:100%;height:100%;object-fit:cover;display:block;}
-.sp-art-ph{
-  width:100%;height:100%;display:flex;align-items:center;justify-content:center;
-}
-.sp-art-ph svg{width:22px;height:22px;color:var(--sp);}
-.sp-info{flex:1;min-width:0;}
-.sp-lbl{
-  display:flex;align-items:center;gap:5px;
-  font-size:.65rem;font-weight:700;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--sp);margin-bottom:4px;
-}
-.sp-lbl svg{width:12px;height:12px;}
-.sp-song{font-size:.88rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.sp-artist{font-size:.72rem;color:var(--muted2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.sp-prog{margin-top:9px;display:flex;align-items:center;gap:7px;}
-.sp-t{font-size:.65rem;color:var(--muted);width:26px;flex-shrink:0;}
-.sp-t.e{text-align:right;}
-.sp-bar{flex:1;height:3px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;}
-.sp-fill{height:100%;border-radius:99px;background:var(--sp);transition:width 1s linear;}
-.sp-eq{display:flex;align-items:flex-end;gap:2px;height:16px;flex-shrink:0;}
-.sp-eq span{width:3px;border-radius:2px;background:var(--sp);animation:eqA .6s ease-in-out infinite alternate;}
-.sp-eq span:nth-child(1){animation-delay:0s;height:50%;}
-.sp-eq span:nth-child(2){animation-delay:.15s;height:100%;}
-.sp-eq span:nth-child(3){animation-delay:.05s;height:35%;}
-.sp-eq span:nth-child(4){animation-delay:.2s;height:70%;}
-@keyframes eqA{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
 
 /* ── FLOATING MUSIC WIDGET ── */ 
 .music-widget{
@@ -483,16 +427,7 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
   from{opacity:0;transform:translateY(22px);}
   to{opacity:1;transform:translateY(0);}
 }
-
-.ld{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:.75rem;color:var(--muted2);
-}
-.ld::before{
-  content:'';width:8px;height:8px;border-radius:50%;
-  border:2px solid var(--muted);border-top-color:var(--c1);
-  animation:spin .7s linear infinite;display:inline-block;
-}
+@keyframes eqA{from{transform:scaleY(.25)}to{transform:scaleY(1)}}
 </style>
 </head>
 <body>
@@ -517,7 +452,7 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
           onerror="this.style.display='none';document.getElementById('avInitial').style.display=''"/>
         <span id="avInitial" style="display:none">N</span>
       </div>
-      <div class="av-status offline" id="avBadge"></div>
+      <div class="av-status online" id="avBadge"></div>
     </div>
 
     <div class="av-name">
@@ -525,13 +460,9 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
       <p>@nampc</p>
     </div>
 
-    <div class="status-pill offline" id="statusPill">
+    <div class="status-pill online" id="statusPill">
       <span class="sp-dot"></span>
-      <span id="statusTxt"><span class="ld">Đang tải...</span></span>
-    </div>
-    <div class="custom-st" id="customSt">
-      <span id="csEmoji"></span>
-      <span id="csTxt"></span>
+      <span id="statusTxt">Online</span>
     </div>
   </div>
 
@@ -581,31 +512,6 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
         <div class="lnk-sub">Nam PC Channel</div>
       </div>
     </a>
-  </div>
-
-  <!-- SPOTIFY -->
-  <div class="sp-card" id="spCard">
-    <div class="sp-inner">
-      <div class="sp-art" id="spArt">
-        <div class="sp-art-ph">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-        </div>
-      </div>
-      <div class="sp-info">
-        <div class="sp-lbl">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
-          ĐANG NGHE SPOTIFY
-        </div>
-        <div class="sp-song" id="spSong">—</div>
-        <div class="sp-artist" id="spArtist">—</div>
-        <div class="sp-prog">
-          <span class="sp-t" id="spCur">0:00</span>
-          <div class="sp-bar"><div class="sp-fill" id="spFill"></div></div>
-          <span class="sp-t e" id="spEnd">0:00</span>
-        </div>
-      </div>
-      <div class="sp-eq"><span></span><span></span><span></span><span></span></div>
-    </div>
   </div>
 
   <div class="foot">© 2026 Nam PC · Made with ❤</div>
@@ -703,111 +609,6 @@ input[type=range].vol::-webkit-slider-thumb:hover{transform:scale(1.35);}
 
 <script>
 // ════════════════════════════════
-//  LANYARD
-// ════════════════════════════════
-const DISCORD_ID = '1450140698119770264';
-
-const statusPill = document.getElementById('statusPill');
-const statusTxt  = document.getElementById('statusTxt');
-const avBadge    = document.getElementById('avBadge');
-const customSt   = document.getElementById('customSt');
-const csEmoji    = document.getElementById('csEmoji');
-const csTxt      = document.getElementById('csTxt');
-const spCard     = document.getElementById('spCard');
-const spSong     = document.getElementById('spSong');
-const spArtist   = document.getElementById('spArtist');
-const spArt      = document.getElementById('spArt');
-const spFill     = document.getElementById('spFill');
-const spCur      = document.getElementById('spCur');
-const spEnd      = document.getElementById('spEnd');
-
-const STATUS_MAP = {
-  online: { label:'Online', cls:'online' },
-  idle:   { label:'Idle',   cls:'idle'   },
-  dnd:    { label:'Do Not Disturb', cls:'dnd' },
-  offline:{ label:'Offline',cls:'offline'},
-};
-
-function fmtMs(ms){
-  const s=Math.floor(ms/1000),m=Math.floor(s/60);
-  return m+':'+String(s%60).padStart(2,'0');
-}
-
-let spTimer=null, spStart=0, spEndTs=0;
-function tickSp(){
-  const now=Date.now(), el=now-spStart, tot=spEndTs-spStart;
-  if(tot<=0)return;
-  const p=Math.min((el/tot)*100,100);
-  spFill.style.width=p+'%';
-  spCur.textContent=fmtMs(el);
-  spEnd.textContent=fmtMs(tot);
-}
-
-function applyLanyard(d){
-  const s=d.discord_status||'offline';
-  const info=STATUS_MAP[s]||STATUS_MAP.offline;
-  ['online','idle','dnd','offline'].forEach(c=>{statusPill.classList.remove(c);avBadge.classList.remove(c);});
-  statusPill.classList.add(info.cls);
-  avBadge.classList.add(info.cls);
-  statusTxt.textContent=info.label;
-
-  const cs=(d.activities||[]).find(a=>a.type===4);
-  if(cs&&(cs.state||cs.emoji)){
-    csEmoji.textContent=cs.emoji?.name||'';
-    csTxt.textContent=cs.state||'';
-    customSt.classList.add('show');
-  } else {
-    customSt.classList.remove('show');
-  }
-
-  const sp=d.spotify;
-  if(sp){
-    spCard.classList.add('show');
-    spSong.textContent=sp.song||'—';
-    spArtist.textContent=sp.artist||'—';
-    if(sp.album_art_url){
-      spArt.innerHTML=`<img src="${sp.album_art_url}" alt="art"/>`;
-    } else {
-      spArt.innerHTML=`<div class="sp-art-ph"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg></div>`;
-    }
-    clearInterval(spTimer);
-    spStart=sp.timestamps?.start||Date.now();
-    spEndTs=sp.timestamps?.end||Date.now();
-    tickSp();
-    spTimer=setInterval(tickSp,1000);
-  } else {
-    spCard.classList.remove('show');
-    clearInterval(spTimer);
-  }
-}
-
-function connectWS(){
-  const ws=new WebSocket('wss://api.lanyard.rest/socket');
-  let hb=null;
-  ws.addEventListener('open',()=>{});
-  ws.addEventListener('message',evt=>{
-    const msg=JSON.parse(evt.data);
-    if(msg.op===1){
-      ws.send(JSON.stringify({op:2,d:{subscribe_to_id:DISCORD_ID}}));
-      hb=setInterval(()=>ws.send(JSON.stringify({op:3})),msg.d.heartbeat_interval);
-    }
-    if(msg.op===0&&(msg.t==='INIT_STATE'||msg.t==='PRESENCE_UPDATE')) applyLanyard(msg.d);
-  });
-  ws.addEventListener('close',()=>{clearInterval(hb);setTimeout(connectWS,5000);});
-  ws.addEventListener('error',()=>ws.close());
-}
-
-fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`)
-  .then(r=>r.json())
-  .then(j=>{if(j.success)applyLanyard(j.data);})
-  .catch(()=>{
-    statusTxt.textContent='Offline';
-    statusPill.classList.add('offline');
-    avBadge.classList.add('offline');
-  });
-connectWS();
-
-// ════════════════════════════════
 //  MUSIC PLAYER
 // ════════════════════════════════
 const aud     = document.getElementById('aud');
@@ -821,7 +622,6 @@ const discSpin= document.getElementById('discSpin');
 const eqBars  = document.querySelectorAll('.pl-eq-bar');
 const fileIn  = document.getElementById('fileIn');
 
-// ✅ FIX: trỏ đúng vào <path id="playIco">, không phải <svg>
 const playIcoPath = document.getElementById('playIco');
 
 const PLAY_PATH  = 'M8 5v14l11-7z';
@@ -839,7 +639,6 @@ function fmt(s){
 
 function setPlay(v){
   playing = v;
-  // ✅ setAttribute('d', ...) gọi đúng trên <path>
   playIcoPath.setAttribute('d', v ? PAUSE_PATH : PLAY_PATH);
   discSpin.classList.toggle('paused', !v);
   eqBars.forEach(b => b.classList.toggle('paused', !v));
