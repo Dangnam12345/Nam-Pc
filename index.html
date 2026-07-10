@@ -680,11 +680,21 @@ function onYouTubeIframeAPIReady(){
     playerVars:{playsinline:1,controls:0},
     events:{
       onReady:()=>{ ytReady=true; },
-      onStateChange:onYtStateChange
+      onStateChange:onYtStateChange,
+      onError:onYtError
     }
   });
 }
 window.onYouTubeIframeAPIReady=onYouTubeIframeAPIReady;
+
+function onYtError(e){
+  stopYtPoll();
+  setPlay(false);
+  const codes={2:'ID video không hợp lệ',5:'Lỗi trình phát HTML5',100:'Video không tồn tại hoặc đã bị xoá',101:'Video này bị chặn nhúng (embedding disabled) bởi chủ sở hữu',150:'Video này bị chặn nhúng (embedding disabled) bởi chủ sở hữu'};
+  const msg=codes[e.data]||('Lỗi YouTube không xác định (mã '+e.data+')');
+  tArtist.textContent=msg;
+  console.error('YouTube player error:',e.data,msg);
+}
 
 function onYtStateChange(e){
   if(e.data===YT.PlayerState.PLAYING){
@@ -721,8 +731,18 @@ function loadTrack(i){
   curT.textContent='0:00'; totT.textContent='0:00'; seekBar.value=0;
 
   if(t.type==='yt'){
+    let tries=0;
     const start=()=>{
-      if(!ytReady||!ytPlayer){ setTimeout(start,300); return; }
+      if(!ytReady||!ytPlayer){
+        tries++;
+        if(tries>20){ // ~6 giây không sẵn sàng -> báo lỗi thay vì treo im lặng
+          tArtist.textContent='Không kết nối được YouTube Player. Kiểm tra mạng hoặc trình chặn quảng cáo.';
+          console.error('YouTube IFrame API không sẵn sàng sau nhiều lần thử.');
+          return;
+        }
+        setTimeout(start,300);
+        return;
+      }
       ytPlayer.loadVideoById(t.ytId);
       ytPlayer.setVolume(Number(volBar.value));
       setPlay(true);
