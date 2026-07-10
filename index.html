@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="referrer" content="strict-origin-when-cross-origin"/>
 <title>Nam PC</title>
 <link rel="icon" type="image/png" href="https://i.postimg.cc/j2zt9snH/nampc.png">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -677,7 +678,7 @@ function stopYtPoll(){ if(ytPollTimer){clearInterval(ytPollTimer);ytPollTimer=nu
 function onYouTubeIframeAPIReady(){
   ytPlayer=new YT.Player('ytPlayer',{
     height:'1',width:'1',
-    playerVars:{playsinline:1,controls:0},
+    playerVars:{playsinline:1,controls:0,origin:window.location.origin},
     events:{
       onReady:()=>{ ytReady=true; },
       onStateChange:onYtStateChange,
